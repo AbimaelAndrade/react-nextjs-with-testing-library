@@ -1,0 +1,1 @@
+# Testando aplicação React/NextJS com Testing-library
