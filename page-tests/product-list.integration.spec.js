@@ -31,7 +31,11 @@ describe('<ProductList />', () => {
     })
   })
 
+<<<<<<< HEAD
   it('should render the "no products messages"', async () => {
+=======
+  fit('should render the "no products messages"', async () => {
+>>>>>>> 29ca3e4cda070dc15b190d2dcf76c68134633ffd
     server.createList('product', 0)
 
     renderProductList()
