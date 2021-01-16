@@ -31,11 +31,7 @@ describe('<ProductList />', () => {
     })
   })
 
-<<<<<<< HEAD
   it('should render the "no products messages"', async () => {
-=======
-  fit('should render the "no products messages"', async () => {
->>>>>>> 29ca3e4cda070dc15b190d2dcf76c68134633ffd
     server.createList('product', 0)
 
     renderProductList()
@@ -45,7 +41,17 @@ describe('<ProductList />', () => {
     });
   });
 
-  it.todo('should display error message when promise rejects')
+  fit('should display error message when promise rejects', async () => {
+    server.get('products', () => {
+      return Response(500, {}, '');
+    });
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getByTestId('server-message-error')).toBeInTheDocument();
+    })
+  });
 
   it.todo('should render the Search component')
   it.todo('should filter the product list when a search is performed')
