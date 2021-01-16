@@ -6,10 +6,14 @@ export default function Home() {
   const { products, error } = useFetchProducts();
 
   const renderProductListOrMessage = () => {
-    if(products.length !== 0) {
+    if(products.length !== 0 && !error) {
       return products.map((product) => (
         <ProductCard key={product.id}  product={product}/>
       ))
+    }
+
+    if(error){
+      return <h4 data-testid="server-message-error">Server error</h4>;
     }
 
     return <h4 data-testid="no-products-message">No products</h4>;
