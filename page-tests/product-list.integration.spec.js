@@ -32,9 +32,7 @@ describe('<ProductList />', () => {
   })
 
   fit('should render the "no products messages"', async () => {
-    server.get('products', () => {
-      return Response(500, {}, '');
-    });
+    server.createList('product', 0)
 
     renderProductList()
 
@@ -43,9 +41,10 @@ describe('<ProductList />', () => {
     });
   });
 
+  it.todo('should display error message when promise rejects')
+
   it.todo('should render the Search component')
   it.todo('should filter the product list when a search is performed')
-  it.todo('should display error message when promise rejects')
   it.todo('should display the total quantity of products')
   it.todo('should display product (singular) when there is only 1 product')
 
