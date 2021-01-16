@@ -31,10 +31,20 @@ describe('<ProductList />', () => {
     })
   })
 
-  it.todo('should render the products messages')
+  it('should render the "no products messages"', async () => {
+    server.createList('product', 0)
+
+    renderProductList()
+
+    await waitFor(() => {
+      expect(screen.getByTestId('no-products-message')).toBeInTheDocument();
+    });
+  });
+
+  it.todo('should display error message when promise rejects')
+
   it.todo('should render the Search component')
   it.todo('should filter the product list when a search is performed')
-  it.todo('should display error message when promise rejects')
   it.todo('should display the total quantity of products')
   it.todo('should display product (singular) when there is only 1 product')
 
