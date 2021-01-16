@@ -50,7 +50,9 @@ describe('<ProductList />', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('server-message-error')).toBeInTheDocument();
-    })
+      expect(screen.queryByTestId('no-products-message')).toBeNull();
+      expect(screen.queryAllByTestId('product-card')).toHaveLength(0)
+    }) 
   });
 
   it.todo('should render the Search component')
