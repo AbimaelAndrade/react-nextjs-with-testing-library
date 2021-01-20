@@ -1,6 +1,7 @@
-import { render, screen, waitFor} from '@testing-library/react'
+import { render, screen, waitFor, fireEvent} from '@testing-library/react'
 import ProductList from '../pages'
 import {makeServer} from '../miragejs/server'
+import useEvent from '@testing-library/user-event'
 
 const renderProductList = () => {
   render(<ProductList />);
@@ -41,7 +42,7 @@ describe('<ProductList />', () => {
     });
   });
 
-  fit('should display error message when promise rejects', async () => {
+  it('should display error message when promise rejects', async () => {
     server.get('products', () => {
       return Response(500, {}, '');
     });
@@ -55,8 +56,30 @@ describe('<ProductList />', () => {
     }) 
   });
 
-  it.todo('should render the Search component')
-  it.todo('should filter the product list when a search is performed')
+  it('should filter the product list when a search is performed', async () => {
+    const searchTerm = 'Relógio Automático';
+    server.createList('product', 2);
+    server.create('product', {
+      title: searchTerm
+    });
+
+    renderProductList();
+
+    await waitFor(()=> {
+      expect(screen.getAllByTestId('product-card')).toHaveLength(3);
+    });
+
+    const form = screen.getByRole('form');
+    const input = screen.getByRole('searchbox');
+
+    await useEvent.type(input, searchTerm);
+    await fireEvent.submit(form);
+
+    await waitFor(()=> {
+      expect(screen.getAllByTestId('product-card')).toHaveLength(1);
+    });
+  });
+
   it.todo('should display the total quantity of products')
   it.todo('should display product (singular) when there is only 1 product')
 
