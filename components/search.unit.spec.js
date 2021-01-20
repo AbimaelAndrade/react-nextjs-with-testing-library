@@ -1,10 +1,15 @@
 import Search from './search'
 import {render, screen, fireEvent } from '@testing-library/react'
-import useEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 const doSearch = jest.fn()
 
 describe('<Search />', () => {
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
+
   it('Should render a from', () => {
     render(<Search doSearch={doSearch} />)
 
@@ -32,9 +37,23 @@ describe('<Search />', () => {
     const form = screen.getByRole('form')
     const input = screen.getByRole('searchbox')
 
-    useEvent.type(input, inputText)
+    await userEvent.type(input, inputText)
     await fireEvent.submit(form)
 
     expect(doSearch).toHaveBeenCalledWith(inputText)
+  })
+
+  fit('Should call doSearch when search input is cleared', async () => {
+    render(<Search doSearch={doSearch} />);
+
+    const inputText = 'some text here';
+    const input = screen.getByRole('searchbox');
+
+    await userEvent.type(input, inputText);
+    await userEvent.clear(input);
+
+
+    expect(doSearch).toHaveBeenCalledTimes(1);
+    expect(doSearch).toHaveBeenCalledWith('');
   })
 });
